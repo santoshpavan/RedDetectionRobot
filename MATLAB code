@@ -17,6 +17,10 @@ htext7 = vision.TextInserter('Text','forward','Color',[255 0 0],'Location',[150 
 hshapered = vision.ShapeInserter('Fill',true,'FillColor','Custom','CustomFillColor',[255 0 0],'Opacity',1);
 hvideoln = vision.VideoPlayer('Name','My_Video','Position',[100 100 vidinfo.MaxWidth vidinfo.MaxHeight]);
 nframe = 0;
+
+arduinoSerial = serial('COM3','Baudrate',9600);
+fopen(arduinoSerial);
+
 L=0;
 while(nframe < 500)
     frame = step(vid);
@@ -74,10 +78,12 @@ while(nframe < 500)
                if(L==1)
                 vidln=step(htext3,vidln);
                 vidln=step(htext6,vidln,[150 60]);
+                fprintf('f');
                end
                if(L==2)
-                    vidln=step(htext3,vidln);
-                    vidln=step(htext5,vidln,[150 60]);
+                vidln=step(htext3,vidln);
+                vidln=step(htext5,vidln,[150 60]);
+                fprintf('b');    
                end
                if(L==0)
                 vidln=step(htext3,vidln);
