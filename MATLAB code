@@ -101,3 +101,4 @@ while(nframe < 500)
 end
 release(hvideoln);
 release(vid);
+fclose(arduinoSerial);
