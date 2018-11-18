@@ -18,6 +18,10 @@ hshapered = vision.ShapeInserter('Fill',true,'FillColor','Custom','CustomFillCol
 hvideoln = vision.VideoPlayer('Name','My_Video','Position',[100 100 vidinfo.MaxWidth vidinfo.MaxHeight]);
 nframe = 0;
 L=0;
+
+arduinoSerial = serial('COM3','Baudrate',9600);
+fopen(arduinoSerial);
+
 while(nframe < 500)
     frame = step(vid);
     [m n p]=size(frame);
@@ -25,19 +29,19 @@ while(nframe < 500)
     diff  = imsubtract(frame(:,:,1) , rgb2gray(frame));
     binframe = medfilt2(diff, [3 3]);
     binframe = im2bw(binframe,redth);
-   [area centroid bbox] = step(hblob,binframe);
+    [area centroid bbox] = step(hblob,binframe);
     centroid = uint16(centroid);
     p=uint16(n/3);
     q=uint16(n/2);
     h=q-20;
     k=q+20;
-     frame(1:20, 1:205 , :) = 0;
-     frame(40:60,1:205,:)=0;
-     frame(60:80,1:205,:)=0;
-     frame(1:m,p,:)=0;
-     frame(1:m,2*p,:)=0;
-     frame(1:m,q+20,:)=0;
-     frame(1:m,q-20,:)=0;
+    frame(1:20, 1:205 , :) = 0;
+    frame(40:60,1:205,:)=0;
+    frame(60:80,1:205,:)=0;
+    frame(1:m,p,:)=0;
+    frame(1:m,2*p,:)=0;
+    frame(1:m,q+20,:)=0;
+    frame(1:m,q-20,:)=0;
     vidln = step(hshapered,frame,bbox);
     
     for object = 1:length(bbox(:,1))
@@ -74,6 +78,7 @@ while(nframe < 500)
                if(L==1)
                 vidln=step(htext3,vidln);
                 vidln=step(htext6,vidln,[150 60]);
+                fprintf('f');
                end
                if(L==2)
                     vidln=step(htext3,vidln);
@@ -82,6 +87,7 @@ while(nframe < 500)
                if(L==0)
                 vidln=step(htext3,vidln);
                 vidln=step(htext7,vidln);
+                fprintf('b'); 
                end
             end
         end
